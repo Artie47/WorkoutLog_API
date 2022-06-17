@@ -1,11 +1,10 @@
 package REST_API.services;
 
-import REST_API.model.Group;
 import REST_API.model.Schedule;
 import REST_API.model.Trainer;
 import REST_API.model.User;
-import REST_API.repository.ScheduleDAO;
-import REST_API.repository.mappers.ScheduleMapper;
+import REST_API.repository.ScheduleRepository;
+import REST_API.repository.ScheduleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,10 +16,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class JDBCTemplateScheduleDAOImpl implements ScheduleDAO {
+public class JDBCTemplateScheduleDAOImpl implements ScheduleRepository {
 
     // Хранилище клиентов
-    private static final Map<Integer, Schedule> SCHEDULE_REPOSITORY_MAP = new HashMap<>();
 
     private DataSource dataSource;
 
@@ -28,17 +26,10 @@ public class JDBCTemplateScheduleDAOImpl implements ScheduleDAO {
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public void setDataSource(DataSource dataSource) {
-        this.dataSource = dataSource;
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
-    }
-
-    //Выдача пользователя по логину
-    @Override
     public Schedule getScheduleByDate(Date date) {
         String SQL = "SELECT * FROM schedule WHERE date = ?";
         return jdbcTemplate.query(SQL,
-                new Object[]{date} ,
+                new Object[]{date},
                 new BeanPropertyRowMapper<>(Schedule.class)
         ).stream().findAny().orElse(null);
 
@@ -49,7 +40,7 @@ public class JDBCTemplateScheduleDAOImpl implements ScheduleDAO {
     public Schedule getScheduleById(int id) {
         String SQL = "SELECT * FROM schedule WHERE id = ?";
         return jdbcTemplate.query(SQL,
-                new Object[]{id} ,
+                new Object[]{id},
                 new BeanPropertyRowMapper<>(Schedule.class)
         ).stream().findAny().orElse(null);
     }
@@ -84,22 +75,77 @@ public class JDBCTemplateScheduleDAOImpl implements ScheduleDAO {
 
     @Override
     public List<Schedule> getLessonsOnMonth(User user) {
+        Calendar cal = Calendar.getInstance();
+        DateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mi");
+
+        cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DATE));
+        String firstDay = cal.getTime().toString();
+        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
+        String endDay = cal.getTime().toString();
+
+
+        String SQL = String.format("SELECT * FROM SCHEDULE WHERE group_id = %d AND date_of_start BETWEEN %s AND %s", user.getGroup(), firstDay, endDay);
+        return jdbcTemplate.query(SQL, BeanPropertyRowMapper.newInstance(Schedule.class));
+
+    }
+
+    @Override
+    public <S extends Schedule> S save(S entity) {
         return null;
     }
 
-//    @Override
-//    public List<Schedule> getLessonsOnMonth(User user) {
-//        Calendar cal = Calendar.getInstance();
-//        DateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mi");
-//
-//        cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DATE));
-//        String firstDay = cal.getTime().toString();
-//        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
-//        String endDay = cal.getTime().toString();
-//
-//
-//        String SQL = String.format("SELECT * FROM SCHEDULE WHERE group_id = %d AND date_of_start BETWEEN %s AND %s", g.getId(), firstDay, endDay);
-//        return jdbcTemplate.
-//                query(SQL, new ScheduleMapper());
+    @Override
+    public <S extends Schedule> Iterable<S> saveAll(Iterable<S> entities) {
+        return null;
+    }
+
+    @Override
+    public Optional<Schedule> findById(Integer integer) {
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean existsById(Integer integer) {
+        return false;
+    }
+
+    @Override
+    public Iterable<Schedule> findAll() {
+        return null;
+    }
+
+    @Override
+    public Iterable<Schedule> findAllById(Iterable<Integer> integers) {
+        return null;
+    }
+
+    @Override
+    public long count() {
+        return 0;
+    }
+
+    @Override
+    public void deleteById(Integer integer) {
 
     }
+
+    @Override
+    public void delete(Schedule entity) {
+
+    }
+
+    @Override
+    public void deleteAllById(Iterable<? extends Integer> integers) {
+
+    }
+
+    @Override
+    public void deleteAll(Iterable<? extends Schedule> entities) {
+
+    }
+
+    @Override
+    public void deleteAll() {
+
+    }
+}

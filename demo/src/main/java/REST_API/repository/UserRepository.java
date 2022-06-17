@@ -9,4 +9,5 @@ import javax.sql.DataSource;
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
 
+    User findByEmailPassword(String email, String password);
 }

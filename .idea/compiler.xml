@@ -8,8 +8,6 @@
       <module name="com.example.demo" target="1.8" />
       <module name="com.example.demo.main" target="1.8" />
       <module name="com.example.demo.test" target="1.8" />
-      <module name="demo.demo.main~1" target="1.8" />
-      <module name="demo.demo.test~1" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
