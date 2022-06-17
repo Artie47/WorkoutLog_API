@@ -25,24 +25,17 @@ public class User{
     @Column(name = "date_of_reg")
     private Date date_of_reg;
 
-    @ManyToOne
-    @JoinColumn(name = "id_group")
-    private Group id_group;
+    @Column(name = "group_id")
+    private int id_group;
 
-    /**
-     * Default Constructor
-     */
     public User(){}
 
-    /**
-     * Plain constructor
-     */
-    public User(String name, String email, String password, Date date_of_reg, Group id_group){
+    public User(String name, String email, String password, Date date_of_reg, String id_group){
         this.name = name;
         this.email = email;
         this.password = password;
         this.date_of_reg = date_of_reg;
-        this.id_group = id_group;
+        this.id_group = Integer.getInteger(id_group);
     }
 
     public int getId() {
@@ -81,11 +74,11 @@ public class User{
         this.date_of_reg = date_of_reg;
     }
 
-    public Group getGroup(){
+    public int getGroup(){
         return  id_group;
     }
 
-    public void setGroup(Group group){
+    public void setGroup(int group){
         this.id_group = group;
     }
 

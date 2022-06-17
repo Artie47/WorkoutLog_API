@@ -1,4 +1,4 @@
-package REST_API.repository.jdbc;
+package REST_API.services;
 
 import REST_API.model.Group;
 import REST_API.model.Schedule;
@@ -6,17 +6,12 @@ import REST_API.model.Trainer;
 import REST_API.model.User;
 import REST_API.repository.ScheduleDAO;
 import REST_API.repository.mappers.ScheduleMapper;
-import javafx.beans.binding.MapExpression;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -89,19 +84,22 @@ public class JDBCTemplateScheduleDAOImpl implements ScheduleDAO {
 
     @Override
     public List<Schedule> getLessonsOnMonth(User user) {
-        Calendar cal = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mi");
+        return null;
+    }
 
-        cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DATE));
-        String firstDay = cal.getTime().toString();
-        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
-        String endDay = cal.getTime().toString();
-
-        Group g = user.getGroup();
-
-        String SQL = String.format("SELECT * FROM SCHEDULE WHERE group_id = %d AND date_of_start BETWEEN %s AND %s", g.getId(), firstDay, endDay);
-        return jdbcTemplate.
-                query(SQL, new ScheduleMapper());
+//    @Override
+//    public List<Schedule> getLessonsOnMonth(User user) {
+//        Calendar cal = Calendar.getInstance();
+//        DateFormat df = new SimpleDateFormat("dd-MM-yyyy hh:mi");
+//
+//        cal.set(Calendar.DATE, cal.getActualMinimum(Calendar.DATE));
+//        String firstDay = cal.getTime().toString();
+//        cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE));
+//        String endDay = cal.getTime().toString();
+//
+//
+//        String SQL = String.format("SELECT * FROM SCHEDULE WHERE group_id = %d AND date_of_start BETWEEN %s AND %s", g.getId(), firstDay, endDay);
+//        return jdbcTemplate.
+//                query(SQL, new ScheduleMapper());
 
     }
-}

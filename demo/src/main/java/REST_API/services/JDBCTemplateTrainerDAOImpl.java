@@ -1,4 +1,4 @@
-package REST_API.repository.jdbc;
+package REST_API.services;
 
 import REST_API.repository.TrainerDAO;
 import REST_API.model.Trainer;
