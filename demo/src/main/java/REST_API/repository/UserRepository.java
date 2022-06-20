@@ -2,12 +2,11 @@ package REST_API.repository;
 
 import REST_API.model.User;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
-
-import javax.sql.DataSource;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
+//    User findByEmailPassword(User user);
 
-    User findByEmailPassword(String email, String password);
 }

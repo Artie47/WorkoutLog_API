@@ -1,39 +1,36 @@
 package REST_API.services;
 
-import REST_API.model.Schedule;
-import REST_API.repository.UserRepository;
 import REST_API.model.User;
+import REST_API.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
-public class JDBCTemplateUserDAOImpl implements UserRepository{
-
-    @Autowired
-    private UserRepository userRepository;
+public class UserService implements UserRepository{
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private  UserRepository userRepository;
 
-
+    @Override
     public User save(User user){
         return userRepository.save(user);
     }
 
-    @Override
-    public User findByEmailPassword(String email, String password) {
-        String SQL = "SELECT * FROM users WHERE email = ? AND password = ?";
+//    @Override
+//    public User findByEmailPassword(User user) {
+//        String SQL = "SELECT * FROM users WHERE email = ? AND password = ?";
+//
+//        return jdbcTemplate.query(SQL,
+//                new Object[]{user.getEmail(), user.getPassword()},
+//                new BeanPropertyRowMapper<>(User.class)
+//        ).stream().findAny().orElse(null);
+//    }
 
-        return jdbcTemplate.query(SQL,
-                new Object[]{email, password},
-                new BeanPropertyRowMapper<>(User.class)
-        ).stream().findAny().orElse(null);
-    }
 
     @Override
     public <S extends User> Iterable<S> saveAll(Iterable<S> entities) {
@@ -42,7 +39,7 @@ public class JDBCTemplateUserDAOImpl implements UserRepository{
 
     @Override
     public Optional<User> findById(Integer integer) {
-        return Optional.empty();
+        return userRepository.findById(integer);
     }
 
     @Override
@@ -89,6 +86,7 @@ public class JDBCTemplateUserDAOImpl implements UserRepository{
     public void deleteAll() {
 
     }
+
 }
 
 
