@@ -5,22 +5,10 @@ import javax.persistence.*;
 @Table(name = "Groups")
 public class Group {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
-    @Column(name = "name", nullable = false)
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "id_trainer")
+    private int price;
     private Trainer id_trainer;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 }
