@@ -1,30 +1,37 @@
 package REST_API.contorller;
 
+import REST_API.model.AuthRequest;
 import REST_API.model.User;
 import REST_API.services.UserService;
+import REST_API.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
 @RestController
 public class UserController {
+
+
     @Autowired
-    private UserService userService;
-    @PostMapping(value = "/users/save")
-    public User save(@RequestBody User user) {
-        return userService.save(user);
+    private JwtUtil jwtUtil;
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+
+    @PostMapping("/signIn")
+    public String generateToken(@RequestBody AuthRequest authRequest) throws Exception {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
+            );
+        } catch (Exception ex) {
+            throw new Exception("inavalid username/password");
+        }
+        return jwtUtil.generateToken(authRequest.getEmail());
     }
-
-    @GetMapping(value = "/users/get")
-    public Optional<User> getUser(@RequestBody Integer id){
-        return userService.findById(id);
-    }
-
-//    @PostMapping(value = "/users/check")
-//    public User check(@RequestBody User user){ return userService.findByEmailPassword(user);}
-
 }

@@ -3,7 +3,7 @@ package REST_API.repository;
 import REST_API.model.SportKind;
 import javax.sql.DataSource;
 
-public interface SportKindDAO {
+public interface SportKindRepository {
     public void setDataSource(DataSource dataSource);
     public void createSportKing(SportKind sportkind);
     public SportKind getSportKingByEmail(String sportkind);
