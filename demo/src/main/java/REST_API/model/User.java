@@ -1,32 +1,24 @@
 package REST_API.model;
 
+import lombok.Getter;
+import lombok.Setter;
 
-import lombok.*;
-
-import java.util.Date;
-
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Entity
-@Table(name = "Users")
+@Entity(name = "users")
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
     private String email;
-    private String hashPassword;
-    private Date date_of_reg;
-    private int id_group;
-
-    @Transient
     private String password;
-
-
+    private String date_of_reg;
+    private int group_id;
 }

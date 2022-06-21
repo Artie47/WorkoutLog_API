@@ -9,10 +9,6 @@ public class Group {
     private int id;
     private String name;
     private int price;
-    @ManyToOne
-    @JoinColumn(name = "id_trainer")
-    private Trainer id_trainer;
-
-
+    private int id_trainer;
 
 }

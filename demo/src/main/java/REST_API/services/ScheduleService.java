@@ -27,7 +27,7 @@ public class ScheduleService implements ScheduleRepository{
         String endDay = cal.getTime().toString();
 
 
-        String SQL = String.format("SELECT * FROM SCHEDULE WHERE group_id = %d AND date_of_start BETWEEN %s AND %s", user.getId_group(), firstDay, endDay);
+        String SQL = String.format("SELECT * FROM SCHEDULE WHERE group_id = %d AND date_of_start BETWEEN %s AND %s", user.getGroup_id(), firstDay, endDay);
         return jdbcTemplate.query(SQL, BeanPropertyRowMapper.newInstance(Schedule.class));
 
     }

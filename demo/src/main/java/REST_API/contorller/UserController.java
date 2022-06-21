@@ -1,13 +1,9 @@
 package REST_API.contorller;
 
-import REST_API.model.AuthRequest;
 import REST_API.model.User;
 import REST_API.repository.UserRepository;
-import REST_API.services.CustomUserDetailsService;
-import REST_API.utils.JwtUtil;
+import REST_API.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,38 +11,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class UserController {
     @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private UserRepository userRepository;
+    private UserService userService;
 
-    @Autowired
-    private CustomUserDetailsService customUserDetailsService;
 
     @PostMapping("/signIn")
-    public String signIn(@RequestBody AuthRequest authRequest) throws Exception {
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(authRequest.getEmail(), authRequest.getPassword())
-            );
-        } catch (Exception ex) {
-            throw new Exception("Неверный пароль/эл. почта");
+    public User signIn(@RequestBody User authRequest) throws Exception {
+        if(userRepository.findByEmail(authRequest.getEmail()) != null){
+            return userRepository.findByEmail(authRequest.getEmail());
         }
-        return jwtUtil.generateToken(authRequest.getEmail());
+        return authRequest;
     }
 
     @PostMapping("/signUp")
-    public User signUp(@RequestBody User user) throws Exception {
-        try {
-            if (customUserDetailsService.loadUserByUsername(user.getEmail()) == null) {
-                return userRepository.save(user);
-            }
-        } catch (Exception ex) {
-            throw new Exception(ex);
-        }
-        return user;
+    public User signUp(@RequestBody User user){
+        return userRepository.save(user);
     }
 
     @PostMapping("/getUser")
@@ -58,4 +37,5 @@ public class UserController {
             throw new Exception(ex);
         }
     }
+
 }
