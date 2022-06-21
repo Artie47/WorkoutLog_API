@@ -48,4 +48,14 @@ public class UserController {
         }
         return user;
     }
+
+    @PostMapping("/getUser")
+    public User getUser(@RequestBody User user) throws Exception{
+        try {
+            return userRepository.findByEmail(user.getEmail());
+        }
+        catch (Exception ex){
+            throw new Exception(ex);
+        }
+    }
 }
