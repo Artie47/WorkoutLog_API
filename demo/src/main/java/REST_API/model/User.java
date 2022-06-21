@@ -3,10 +3,7 @@ package REST_API.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 @Getter
@@ -18,7 +15,12 @@ public class User{
     private int id;
     private String name;
     private String email;
-    private String password;
+    @Column(name = "password")
+    private String hashPassword;
     private String date_of_reg;
     private int group_id;
+
+    @Transient
+    private String password;
+
 }
