@@ -1,14 +1,19 @@
 package REST_API.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 @Entity
+@Getter
+@Setter
 @Table(name = "Groups")
 public class SportKind {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
 }
